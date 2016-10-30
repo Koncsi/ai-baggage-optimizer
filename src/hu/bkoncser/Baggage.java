@@ -20,8 +20,10 @@ public class Baggage {
 
     public void optimize(ArrayList<Item> items) {
         Item[] sortedItems = sort(items);
-        for(int i = 0; i<sortedItems.length; i++)
-           putIn(sortedItems[i], i);
+        for(int i = 0; i<sortedItems.length; i++){
+           // System.out.println(i + ": " + sortedItems[i].computeMomentum());
+            putIn(sortedItems[i], i+1);
+        }
     }
 
     private void putIn(Item sortedItem,int i) {
@@ -33,26 +35,34 @@ public class Baggage {
     }
 
     private void fitIn(Item sortedItem, int name) {
-        for(int i = 0; i< height; i++){
-            for(int j = 0; j <width; j++){
+        for(int j = 0; j <width; j++){
+            for(int i = 0; i< height; i++){
                 if(isFit(sortedItem,i,j)){
                     add(sortedItem,i,j, name);
+                    return;
                 }        
             }
         }
     }
 
     private void add(Item sortedItem, int i, int j, int name) {
-        for(int Index = 0; Index < sortedItem.height; Index++){
-            for(int Jndex = 0; Jndex < sortedItem.width; Jndex++){
+        for(int Jndex = 0; Jndex < sortedItem.width; Jndex++){
+            for(int Index = 0; Index < sortedItem.height; Index++){
                 layout[i+Index][j+Jndex] = name;
             }
         }
     }
 
     private boolean isFit(Item sortedItem, int i, int j) {
-        if(i+sortedItem.height < height && j+sortedItem.width < width)
-            return true;
+        if(i+sortedItem.height <= height && j+sortedItem.width <= width){
+            for(int k = i; k< height; k++){
+                for(int l = j; l <width; l++){
+                    if(layout[k][l] != 0)
+                        return false;
+                }
+            }
+            return  true;
+        }
         else
             return false;
     }
