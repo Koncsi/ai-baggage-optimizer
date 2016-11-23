@@ -30,7 +30,7 @@ public class Main {
             for(int i = 0; i < itemSize; i++){
                 input = reader.readLine();
                 values = input.split("\t",-1);
-                items.add(new Item(Integer.parseInt(values[0]), Integer.parseInt(values[1])));
+                items.add(new Item(Integer.parseInt(values[0]), Integer.parseInt(values[1]), i+1));
             }
         } catch (IOException e) {
             e.printStackTrace();

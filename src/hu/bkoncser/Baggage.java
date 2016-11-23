@@ -20,9 +20,11 @@ public class Baggage {
 
     public void optimize(ArrayList<Item> items) {
         Item[] sortedItems = sort(items);
-        for(int i = 0; i<sortedItems.length; i++){
+        for(int i = 0; i < sortedItems.length; i++){
            // System.out.println(i + ": " + sortedItems[i].computeMomentum());
-            putIn(sortedItems[i], i+1);
+            putIn(sortedItems[i], sortedItems[i].getID());
+           // print();
+           // System.out.println();
         }
     }
 
@@ -35,8 +37,8 @@ public class Baggage {
     }
 
     private void fitIn(Item sortedItem, int name) {
-        for(int j = 0; j <width; j++){
-            for(int i = 0; i< height; i++){
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
                 if(isFit(sortedItem,i,j)){
                     add(sortedItem,i,j, name);
                     return;
@@ -54,13 +56,17 @@ public class Baggage {
     }
 
     private boolean isFit(Item sortedItem, int i, int j) {
+
         if(i+sortedItem.height <= height && j+sortedItem.width <= width){
-            for(int k = i; k< height; k++){
-                for(int l = j; l <width; l++){
-                    if(layout[k][l] != 0)
+            for(int k = i; k < i+sortedItem.height; k++){
+                for(int l = j; l < j+sortedItem.width; l++){
+                    if(layout[k][l] != 0){
+                        //System.out.println("Wrong: h: " + k + " w: " + l + " layout: " + layout[k][l]);
                         return false;
+                    }
                 }
             }
+            //System.out.println("Fit in");
             return  true;
         }
         else
@@ -73,8 +79,9 @@ public class Baggage {
             for(int j = 0; j <width; j++)
                 if(layout[i][j] == 0)
                     empty++;
-        if(empty>size)
+        if(empty>=size){
             return true;
+        }
         else
             return false;
     }
@@ -85,7 +92,7 @@ public class Baggage {
         while(index < sorted.length){
             Item maxItem = items.get(0);
             for(Item i:items){
-                if(i.computeMomentum() > maxItem.computeMomentum() && i.maxExtension() > maxItem.maxExtension() && i.bulkiness() > maxItem.bulkiness())
+                if(i.computeMomentum() > maxItem.computeMomentum() && i.maxExtension() > maxItem.maxExtension() /*&& i.bulkiness() > maxItem.bulkiness()*/)
                     maxItem = i;
             }
             items.remove(maxItem);
@@ -100,7 +107,7 @@ public class Baggage {
                 if(j == width-1)
                     System.out.println(layout[i][j]);
                 else
-                    System.out.print(layout[i][j] + " ");
+                    System.out.print(layout[i][j] + "\t");
             }
         }
     }
